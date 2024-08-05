@@ -1,21 +1,12 @@
+import css from "./Options.module.css"
 
-
-export default function Options ({onGoodClick, onNeutralClick, onBadClick, onResetClick}){
-
-    return(
-        <div>
-            <button onClick={onGoodClick}>
-                Good
-            </button>
-            <button onClick={onNeutralClick}>
-                Neutral
-            </button>
-            <button onClick={onBadClick}>
-                Bad
-            </button>
-            <button onClick={onResetClick}>
-                Reset
-            </button>
-        </div>
-    )
-}
+export default function Options({ updateFeedback }) {
+    return (
+      <div className={css.beetw}>
+        <button onClick={() => updateFeedback('good')}>Good</button>
+        <button onClick={() => updateFeedback('neutral')}>Neutral</button>
+        <button onClick={() => updateFeedback('bad')}>Bad</button>
+ 
+      </div>
+    );
+  }
