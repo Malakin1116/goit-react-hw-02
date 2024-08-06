@@ -8,7 +8,7 @@ export default function Feedback ({ items, totalFeedback, positivePercentage }) 
               <li>Neutral: {items.neutral}</li>
               <li>Bad: {items.bad}</li>
               <li>Total: {totalFeedback}</li>
-              <li>Positive: {positivePercentage}</li>
+              <li>Positive: {positivePercentage}%</li>
             </ul>
           </div>
 

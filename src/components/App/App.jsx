@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import css from "./App.module.css"
 import Description from "../Description/Description"
@@ -8,26 +8,22 @@ import Feedback from '../Feedback/Feedback';
 import Notification from '../Notification/Notification';
 
 export default function App() {
-  const [clicks, setClicks] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-    total: 0, 
-    positive: 0 
-  });
+  const getInitialFeedback = () => {
+    const savedFeedback = localStorage.getItem('feedbackData');
+    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0, total: 0, positive: 0 };
+  };
+
+  const [clicks, setClicks] = useState(getInitialFeedback);
+
+  useEffect(() => {
+    localStorage.setItem('feedbackData', JSON.stringify(clicks));
+  }, [clicks]); 
 
   const updateFeedback = (feedbackType) => {
     setClicks(prev => {
 
       if (feedbackType === "reset") {
-        return {
-          ...prev,
-          good: 0,
-          neutral: 0,
-          bad: 0,
-          total: 0,
-          positive: 0
-        };
+        return { good: 0, neutral: 0, bad: 0, total: 0, positive: 0 };
       }
 
       return {
