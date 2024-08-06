@@ -17,15 +17,30 @@ export default function App() {
   });
 
   const updateFeedback = (feedbackType) => {
-    setClicks(prev => ({
-      ...prev,
-      [feedbackType]: prev[feedbackType] + 1,
-      total: prev.total + 1,
-      positive: (feedbackType === 'good' || feedbackType === 'neutral')  ? prev.positive + 1 : prev.positive
-    }));
+    setClicks(prev => {
+      
+      if (feedbackType === "reset") {
+        return {
+          ...prev,
+          good: 0,
+          neutral: 0,
+          bad: 0,
+          total: 0,
+          positive: 0
+        };
+      }
+
+      
+      return {
+        ...prev,
+        [feedbackType]: prev[feedbackType] + 1,
+        total: prev.total + 1,
+        positive: (feedbackType === 'good' || feedbackType === 'neutral') ? prev.positive + 1 : prev.positive
+      };
+    });
   };
 
-  const totalFeedback = clicks.good + clicks.neutral + clicks.bad;
+  const totalFeedback = clicks.total; 
 
   return (
     <div className={css.pad}>
@@ -34,7 +49,7 @@ export default function App() {
       />
 
       <Options
-       updateFeedback={updateFeedback}
+        updateFeedback={updateFeedback}
       />
 
       {totalFeedback > 0 ? (<Feedback items={clicks} />) 
