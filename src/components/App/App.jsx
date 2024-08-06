@@ -10,7 +10,7 @@ import Notification from '../Notification/Notification';
 export default function App() {
   const getInitialFeedback = () => {
     const savedFeedback = localStorage.getItem('feedbackData');
-    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0, total: 0, positive: 0 };
+    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
   };
 
   const [clicks, setClicks] = useState(getInitialFeedback);
@@ -23,19 +23,19 @@ export default function App() {
     setClicks(prev => {
 
       if (feedbackType === "reset") {
-        return { good: 0, neutral: 0, bad: 0, total: 0, positive: 0 };
+        return { good: 0, neutral: 0, bad: 0};
       }
 
       return {
         ...prev,
         [feedbackType]: prev[feedbackType] + 1,
-        positive: (feedbackType === 'good' || feedbackType === 'neutral') ? prev.positive + 1 : prev.positive
       };
     });
   };
 
   const totalFeedback = clicks.good + clicks.neutral + clicks.bad;
-  const positivePercentage = totalFeedback > 0 ? Math.round((clicks.positive / totalFeedback) * 100) : 0;
+  const positiveFeedback = clicks.good + clicks.neutral;
+  const positivePercentage = totalFeedback > 0 ? Math.round((positiveFeedback / totalFeedback) * 100) : 0;
 
 
   return (
