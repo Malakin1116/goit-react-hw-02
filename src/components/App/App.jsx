@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 import css from "./App.module.css"
-import Discription from "../Description/Discription"
+import Description from "../Description/Description"
 import Options from "../Options/Options";
 import Feedback from '../Feedback/Feedback';
 import Notification from '../Notification/Notification';
@@ -18,7 +18,7 @@ export default function App() {
 
   const updateFeedback = (feedbackType) => {
     setClicks(prev => {
-      
+
       if (feedbackType === "reset") {
         return {
           ...prev,
@@ -30,30 +30,34 @@ export default function App() {
         };
       }
 
-      
       return {
         ...prev,
         [feedbackType]: prev[feedbackType] + 1,
-        total: prev.total + 1,
         positive: (feedbackType === 'good' || feedbackType === 'neutral') ? prev.positive + 1 : prev.positive
       };
     });
   };
 
-  const totalFeedback = clicks.total; 
+  const totalFeedback = clicks.good + clicks.neutral + clicks.bad;
+  const positivePercentage = totalFeedback > 0 ? Math.round((clicks.positive / totalFeedback) * 100) : 0;
+
 
   return (
     <div className={css.pad}>
-      <Discription
+      <Description
         name="Sip Happens Café"
       />
 
       <Options
         updateFeedback={updateFeedback}
+        totalFeedback={totalFeedback}
       />
 
-      {totalFeedback > 0 ? (<Feedback items={clicks} />) 
-                          : (<Notification message="No feedback yet" />)
+      {totalFeedback > 0 
+        ? (<Feedback items={clicks} 
+                     totalFeedback={totalFeedback} 
+                     positivePercentage={positivePercentage} />)
+        : (<Notification message="No feedback yet" />)
       }
     </div>
   );
